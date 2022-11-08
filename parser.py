@@ -2,8 +2,9 @@ from query import *
 import json
 from prettytable import PrettyTable
 
+
 def main(): 
-	
+
   with open('prove_personali/film_full.json', 'r', encoding='utf-8') as f:
     page_ex_dict = json.load(f)	
 
@@ -13,7 +14,8 @@ def main():
   x = PrettyTable()
   x.field_names = ["Titolo", "Parole in trama"]
   count = 1
-
+  
+  #Use the json file created with PetScan (https://petscan.wmflabs.org/) for all the pages to check
   for i in page_ex_dict:
     film_dict = {}
     titolo_film = i["title"].replace("_"," ")
@@ -26,20 +28,16 @@ def main():
     final_list.append(film_dict)
     x.add_row([film_dict["titolo"], film_dict["nr. parole"]])
     tabella = x.get_csv_string()
+    
+    #extract on a .csv file product title and number of words of the plot
     with open('prove_personali/tabella_finale.csv', 'w') as t:
       t.write(tabella)
 
-  
-  
-#  for i in final_list:
-#    x.add_row([i["titolo"], i["nr. parole"]])
-
-#  tabella = x.get_csv_string()
-
-#  with open('prove_personali/tabella_finale.csv', 'w') as t:
-#    t.write(tabella)
+ 
 
 def parse_page(titolo):
+  #function for parse the plot
+	
   film_json = query(titolo)
   trama_parsed = "*Parsing-Error*"
   try:
